@@ -118,6 +118,20 @@
     display: none;
   }
 }
+
+/* スマホ横画面用調整 */
+@media screen and (max-height: 450px) and (orientation: landscape) {
+  .container {
+    align-items: flex-start;   /* 上寄せ */
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  button {
+    margin-top: 10px;
+  }
+}
+
 </style>
 </head>
 
@@ -166,7 +180,6 @@ function changeText() {
   }
 }
 
-/*===== ツリー描画 ===== */
 /*===== ツリー描画 ===== */
 const canvas = document.getElementById("tree");
 const ctx = canvas.getContext("2d");
