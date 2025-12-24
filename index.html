@@ -2,7 +2,8 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" 
+  content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Merry Xmas</title>
 
 <style>
@@ -10,16 +11,21 @@
     margin: 0;
     font-family: "Times New Roman", serif;
     background: black;
+    overflow: hidden;
   }
 
   .container {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 100vh;
+    min-height: 100vh;
+    min-height: 100svh;
     padding: 20px;
     gap: 30px;
   }
+
+   
+
 
   .tree-box {
     width: 220px;
@@ -29,12 +35,16 @@
     justify-content: center;
   }
 
+  .tree-box {
+    position: relative;
+  }
+
   canvas {
-    position: absolute;
-    top: 50%;
-    left: 35%;
-    transform: translate(-50%, -50%);
-    pointer-events: none;
+    position: relative;
+    top: 0;
+    left: 0;
+    transform: none;
+    display: block;
   }
 
   .text-box {
@@ -67,6 +77,9 @@
     cursor: pointer;
   }
 
+ 
+  
+
   @media (max-width: 600px) {
     .container {
       flex-direction: column;
@@ -81,7 +94,8 @@
   color: white;
   font-size: 18px;
   text-align: center;
-  height: 100vh;
+  min-height: 100vh;
+  min-height: 100svh;
   align-items: center;
   justify-content: center;
   background: black;
@@ -153,12 +167,12 @@ function changeText() {
 }
 
 /*===== ツリー描画 ===== */
+/*===== ツリー描画 ===== */
 const canvas = document.getElementById("tree");
 const ctx = canvas.getContext("2d");
 
-/* ★ canvas サイズ */
 canvas.width = 300;
-canvas.height = 480;
+canvas.height = 590;
 
 const cx = canvas.width / 2;
 const topY = 60;
@@ -169,7 +183,6 @@ let t = 0;
 
 function animate() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = "white";
 
   const points = 260;
 
@@ -182,11 +195,10 @@ function animate() {
 
     const x = cx + Math.cos(angle) * radius;
 
-
-    if (changed && (i + y) % 4 === 0) {  //赤点部分
-      ctx.fillStyle = "red";      
+    if (changed && (i + y) % 4 === 0) {
+      ctx.fillStyle = "red";
     } else {
-      ctx.fillStyle = "white";     
+      ctx.fillStyle = "white";
     }
 
     ctx.beginPath();
@@ -196,17 +208,18 @@ function animate() {
 
   /* 星 */
   ctx.save();
-  ctx.translate(cx, topY - 18);
+  ctx.translate(cx, topY - 10);
   ctx.rotate(t * 0.8);
 
   ctx.beginPath();
   for (let i = 0; i < 5; i++) {
-    ctx.lineTo(0, -10);
+    ctx.lineTo(0, -12);
     ctx.rotate(Math.PI / 5);
-    ctx.lineTo(0, -5);
+    ctx.lineTo(0, -6);
     ctx.rotate(Math.PI / 5);
   }
   ctx.closePath();
+  ctx.fillStyle = "white";
   ctx.fill();
   ctx.restore();
 
@@ -215,6 +228,7 @@ function animate() {
 }
 
 animate();
+
 </script>
 
 </body>
