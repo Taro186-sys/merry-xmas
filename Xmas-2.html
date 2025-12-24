@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" 
+  content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Merry Xmas</title>
+
+<style>
+  body {
+    margin: 0;
+    font-family: "Times New Roman", serif;
+    background: black;
+    overflow: hidden;
+  }
+
+  .container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    min-height: 100svh;
+    padding: 20px;
+    gap: 30px;
+  }
+
+   
+
+
+  .tree-box {
+    width: 220px;
+    aspect-ratio: 1 / 1.6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .tree-box {
+    position: relative;
+  }
+
+  canvas {
+    position: relative;
+    top: 0;
+    left: 0;
+    transform: none;
+    display: block;
+  }
+
+  .text-box {
+    text-align: center;
+  }
+
+  .message {
+    font-size: 36px;
+    color: white;
+  }
+
+  .exam {
+    color: red;
+  }
+
+  .sub-message {
+    margin-top: 12px;
+    font-size: 16px;
+    color: white;
+    opacity: 0.8;
+  }
+
+  button {
+    margin-top: 20px;
+    padding: 10px 18px;
+    font-size: 14px;
+    border: 1px solid #f8f8f888;
+    background: black;
+    color: white;
+    cursor: pointer;
+  }
+
+ 
+  
+
+  @media (max-width: 600px) {
+    .container {
+      flex-direction: column;
+    }
+    .message {
+      font-size: 30px;
+    }
+  }
+
+  .rotate-warning {
+  display: none;
+  color: white;
+  font-size: 18px;
+  text-align: center;
+  min-height: 100vh;
+  min-height: 100svh;
+  align-items: center;
+  justify-content: center;
+  background: black;
+}
+
+/* スマホ縦向き（Android / iPhone 両対応） */
+@media screen and (max-width: 900px) and (orientation: portrait) {
+  .container {
+    display: none;
+  }
+
+  .rotate-warning {
+    display: flex;
+  }
+}
+
+/* 横向きは通常表示 */
+@media screen and (orientation: landscape) {
+  .rotate-warning {
+    display: none;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="rotate-warning">
+  横画面にすると表示されます
+</div>
+   
+
+<div class="container">
+  <div class="tree-box">
+    <canvas id="tree"></canvas>
+  </div>
+
+  <div class="text-box">
+    <div class="message">
+      Merry <span id="exam-word">Xmas</span>!!
+    </div>
+    <div id="submsg" class="sub-message"></div>
+    <button onclick="changeText()">Push</button>
+  </div>
+</div>
+
+<script>
+/* ===== テキスト切り替え ===== */
+let changed = false;
+let speed = 0.03;
+
+function changeText() {
+  const examWord = document.getElementById("exam-word");
+  const sub = document.getElementById("submsg");
+
+  if (!changed) {
+    examWord.textContent = "Exams";
+    examWord.classList.add("exam");
+    sub.textContent = "Enjoy your holidays!";
+    speed = 0.07;
+    changed = true;
+  } else {
+    examWord.textContent = "Xmas";
+    examWord.classList.remove("exam");
+    sub.textContent = "";
+    speed = 0.03;
+    changed = false;
+  }
+}
+
+/*===== ツリー描画 ===== */
+/*===== ツリー描画 ===== */
+const canvas = document.getElementById("tree");
+const ctx = canvas.getContext("2d");
+
+canvas.width = 300;
+canvas.height = 590;
+
+const cx = canvas.width / 2;
+const topY = 60;
+const height = 360;
+const maxRadius = 120;
+
+let t = 0;
+
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  const points = 260;
+
+  for (let i = 0; i < points; i++) {
+    const p = i / points;
+
+    const y = topY + p * height;
+    const radius = p * maxRadius;
+    const angle = i * 0.35 + t;
+
+    const x = cx + Math.cos(angle) * radius;
+
+    if (changed && (i + y) % 4 === 0) {
+      ctx.fillStyle = "red";
+    } else {
+      ctx.fillStyle = "white";
+    }
+
+    ctx.beginPath();
+    ctx.arc(x, y, 2, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  /* 星 */
+  ctx.save();
+  ctx.translate(cx, topY - 10);
+  ctx.rotate(t * 0.8);
+
+  ctx.beginPath();
+  for (let i = 0; i < 5; i++) {
+    ctx.lineTo(0, -12);
+    ctx.rotate(Math.PI / 5);
+    ctx.lineTo(0, -6);
+    ctx.rotate(Math.PI / 5);
+  }
+  ctx.closePath();
+  ctx.fillStyle = "white";
+  ctx.fill();
+  ctx.restore();
+
+  t += speed;
+  requestAnimationFrame(animate);
+}
+
+animate();
+
+</script>
+
+</body>
+</html>
